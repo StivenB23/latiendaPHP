@@ -16,9 +16,10 @@
             <header class="text-center">
             <h1>Paises de la región</h1>
         </header>
-        <table  class="table table-striped">
+        <table border="1px solid lightblue"  class="table table-darck rounded-top table-responsive">
             <thead>
                 <tr>
+                    <th>Bandera</th>
                     <th>País</th>
                     <th>Capital</th>
                     <th>Moneda</th>
@@ -29,17 +30,17 @@
             <tbody>
                 @foreach ($paises as $pais=>$infopais)
                     <tr>
-                        <td scope="row">{{$pais}}</td>
-                        <td>{{$infopais["capital"]}}</td>
-                        <td>{{$infopais["moneda"]}}</td>
-                        <td>{{$infopais["poblacion"]}}</td>
+                        <td> <img src="{{$infopais["imagen"]}}" width="100" alt=""> </td>
+                        <td scope="row" class="text text-success">{{$pais}}</td>
+                        <td class="text text-danger">{{$infopais["capital"]}}</td>
+                        <td class="text text-warning">{{$infopais["moneda"]}}</td>
+                        <td class="text text-primary">{{$infopais["poblacion"]}} millones</td>
                         <td>
                         @foreach ($infopais["ciudades"] as  $clave => $valor)
-                           <p>{{$valor}}</p> 
+                           <p class="bg-info rounded-top">{{$valor}}</p> 
                         @endforeach
                         </td>
-                        
-                       
+   
                     </tr>
                 @endforeach
                
