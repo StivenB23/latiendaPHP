@@ -70,4 +70,12 @@ Route::get('paises', function ()
     // Mostrar la vista
     return view("paises")->with("paises", $paises) ;
 });
+Route::get('menu',function ()
+{
+    return view('layouts.menu');
+});
+Route::get('formulario',function ()
+{
+    return view('products.new');
+})
 ?>
