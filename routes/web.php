@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-
+use App\Http\Controllers\ProductoController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -77,5 +77,9 @@ Route::get('menu',function ()
 Route::get('formulario',function ()
 {
     return view('products.new');
-})
+});
+
+// 
+Route::resource('productos', ProductoController::class);
 ?>
+
