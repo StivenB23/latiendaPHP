@@ -29,9 +29,10 @@ class ProductoController extends Controller
      */
     public function create()
     {
-        //
+        // Seleccionar marcas y categorias de la base de datos
         $marcas= Marca::all();
         $categorias= Categoria::all();
+        // Las enviamos a la vista
       return  view('products.new')->with('categorias',$categorias)->with('marcas',$marcas) ;
     }
 
@@ -43,9 +44,35 @@ class ProductoController extends Controller
      */
     public function store(Request $request)
     {
+        // Acceder a los datos del formulario
         //
-    }
+        // Crear un objeto
+        
+        // echo "<pre>";
+        //     var_dump($request->nombre);
+        //     var_dump($request->description);
+        //     var_dump($request->precio);
+        //     var_dump($request->image);
 
+        // echo "</pre>";
+        $archivo=$request->image;
+        $nombre_archivo=$archivo->getClientOriginalName();
+        // var_dump($nombre_archivo);
+        // Mover el archivo a la carpeta "public/img"
+        $ruta = public_path();
+        var_dump($ruta);
+        $archivo->move("$ruta/img/",$nombre_archivo);
+        // registrar producto
+        $producto=new Producto;
+        $producto->nombre=$request->nombre;
+        $producto->imagen=$nombre_archivo;
+        $producto->descripcion=$request->description;
+        $producto->precio=$request->precio;
+        $producto->marca_id=$request->marca;
+        $producto->categoria_id=$request->categoria;
+        $producto->save();
+    }
+    
     /**
      * Display the specified resource.
      *

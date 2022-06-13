@@ -6351,7 +6351,7 @@ input.invalid[type=search]:not(.browser-default):focus,
 textarea.materialize-textarea.invalid,
 textarea.materialize-textarea.invalid:focus, .select-wrapper.invalid > input.select-dropdown,
 .select-wrapper.invalid > input.select-dropdown:focus {
-  border-bottom: 1px solid #F44336;
+  border-bottom: 1px solid orange;
   -webkit-box-shadow: 0 1px 0 0 #F44336;
           box-shadow: 0 1px 0 0 #F44336;
 }
@@ -7173,7 +7173,7 @@ select {
   cursor: pointer;
   background-color: transparent;
   border: none;
-  border-bottom: 1px solid #9e9e9e;
+  border-bottom: 1px solid #ccc;
   outline: none;
   height: 3rem;
   line-height: 3rem;
@@ -7190,7 +7190,7 @@ select {
 }
 
 .select-wrapper input.select-dropdown:focus {
-  border-bottom: 1px solid #26a69a;
+  border-bottom: 1px solid #93E3FF;
 }
 
 .select-wrapper .caret {
