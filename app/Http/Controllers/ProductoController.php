@@ -7,6 +7,7 @@ use App\Models\Categoria;
 use App\Models\Marca;
 use Illuminate\Http\Request;
 use PhpParser\Node\Stmt\Echo_;
+use Illuminate\Support\Facades\Validator;
 
 class ProductoController extends Controller
 {
@@ -17,9 +18,10 @@ class ProductoController extends Controller
      */
     public function index()
     {
+        $productos= Producto::all();
         //
-        echo "Aquí va la lista de productos \n";
-        return "HOLA";
+        // echo "Aquí va la lista de productos \n";
+        return view('products/list')->with("productos",$productos);
     }
 
     /**
@@ -54,23 +56,61 @@ class ProductoController extends Controller
         //     var_dump($request->precio);
         //     var_dump($request->image);
 
-        // echo "</pre>";
-        $archivo=$request->image;
-        $nombre_archivo=$archivo->getClientOriginalName();
-        // var_dump($nombre_archivo);
-        // Mover el archivo a la carpeta "public/img"
-        $ruta = public_path();
-        var_dump($ruta);
-        $archivo->move("$ruta/img/",$nombre_archivo);
-        // registrar producto
-        $producto=new Producto;
-        $producto->nombre=$request->nombre;
-        $producto->imagen=$nombre_archivo;
-        $producto->descripcion=$request->description;
-        $producto->precio=$request->precio;
-        $producto->marca_id=$request->marca;
-        $producto->categoria_id=$request->categoria;
-        $producto->save();
+        // Validaciones
+        /*
+        *1. Establecer las reglas de validación a aplicar 
+        *   para la 'input data'  
+        */
+        $msg = [];
+        $reglas=[
+            "nombre" => 'required|alpha|unique:productos,nombre',
+            "description" => 'required|min:5|max:10|unique:productos,nombre',
+            "precio"=>'required|numeric',
+            "image"=>'required|image|unique:productos,imagen',
+            "categoria"=>'required',
+            'marca'=>'required'
+        ];
+        // 2. crear el objeto validador
+        $v = Validator::make($request->all(), $reglas, $msg=[
+            'required' =>'Este campo :attribute es requerido',
+            'min' => 'El campo debe tener minimo :min y maximo :max caracteres',
+            'numeric' => 'El campo :attribute debe ser numerico',
+            'unique' =>'El dato ingresado en el campo :attribute ya existe'
+        ]);
+
+        //3. validar
+        //fails() retorna. tru: si la validación falla y false si la validación es valida
+       if ($v->fails()) {
+            //Validación incorrecta
+            // mostrar la vista new, pero llevando los errrores
+            return redirect('productos/create')->withErrors($v);
+            var_dump($v->errors());
+       } else {
+            // validación correcta
+           // echo "</pre>";
+            $archivo=$request->image;
+            $nombre_archivo=$archivo->getClientOriginalName();
+            // var_dump($nombre_archivo);
+            // Mover el archivo a la carpeta "public/img"
+            $ruta = public_path();
+            var_dump($ruta);
+            $archivo->move("$ruta/img/",$nombre_archivo);
+            // registrar producto
+            $producto=new Producto;
+            $producto->nombre=$request->nombre;
+            $producto->imagen=$nombre_archivo;
+            $producto->descripcion=$request->description;
+            $producto->precio=$request->precio;
+            $producto->marca_id=$request->marca;
+            $producto->categoria_id=$request->categoria;
+            $producto->save();
+            return redirect('/productos');
+       }
+ 
+
+
+
+        
     }
     
     /**
